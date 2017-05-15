@@ -1,4 +1,4 @@
-Florify project made by team jep.
+Florify project made by team jepy.
 
 
 
