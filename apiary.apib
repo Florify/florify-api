@@ -4,7 +4,7 @@ FORMAT: 1A
 The florify API allows the monitoring of plant health information
 
 ## plants [/plants]
-A plant.
+A plant which is associated to a user.
 
 ### Retrieve a list of plants [GET /plants]
 
@@ -44,19 +44,6 @@ A plant.
                 + humidity (array[Data])
                 + lux (array[Data])
                 + ph (array[Data])
-
-
-
-### Request latest data for a user's plants [GET /plants/data]
-
-+ Request (application/json)
-    + Headers
-
-            Authorization: token xyz
-
-+ Response 200 (application/json)
-    + Attributes
-        + plants (array[PlantWithId])
 
 
 
