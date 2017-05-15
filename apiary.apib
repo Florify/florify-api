@@ -1,0 +1,218 @@
+FORMAT: 1A
+
+# florify
+The florify API allows the monitoring of plant health information
+
+## plants [/plants]
+A plant.
+
+### Retrieve a list of plants [GET /plants]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: token xyz
+
++ Response 200 (application/json)
+    + Attributes
+        + plants (array)
+            + (PlantWithId)
+                + readings (object)
+                  + temperature (Data)
+                  + humidity (Data)
+                  + lux (Data)
+                  + ph (Data)
+
+
+
+### Retrieve a single plant [GET /plants/{id}{?from}]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: token xyz
+
++ Parameters
+    - id: `123` (number, required) - The ID of the desired plant
+    - from: `20160101` (number, optional) - Start date of historical data requested
+
++ Response 200 (application/json)
+    + Attributes
+        + plant (PlantWithId)
+            + readings (object)
+                + temperature (array[Data])
+                + humidity (array[Data])
+                + lux (array[Data])
+                + ph (array[Data])
+
+
+
+### Request latest data for a user's plants [GET /plants/data]
+
++ Request (application/json)
+    + Headers
+
+            Authorization: token xyz
+
++ Response 200 (application/json)
+    + Attributes
+        + plants (array[PlantWithId])
+
+
+
+
+### Create a new plant[POST /plants/]
+Creating a bookmark requires passing a token
+
++ Request (application/json)
+    + Headers
+
+            Authorization: token xyz
+
+    + Attributes (Plant)
+
++ Response 201 (application/json)
+    + Attributes (PlantWithId)
+
+
+
+### Delete a plant [DELETE /plants/{id}]
+Deleting a plant requires passing a token that proves you are the owner of the plant
+
++ Parameters
+    - id: `4954` (number, required) - The unique ID of the plant to delete
+
++ Request
+    + Headers
+
+            Authorization: token xyz
+
++ Response 204
+
+
+
+### Modify a plant [PATCH /plants/{id}]
+Modifying a plant requires an access token proving you are the owner of the plant
+
++ Parameters
+    - id: `4954` (number, required) - The unique ID of the plant to update
+
++ Request (application/json)
+    + Headers
+
+            Authorization: token xyz
+
+    + Attributes (Plant)
+
++ Response 200 (application/json)
+    + Attributes (PlantWithId)
+
+
+
+
+
+## Authentication [/auth]
+
+### Create a new user (signup) [POST /auth/users]
++ Request (application/json)
+    + Attributes (AuthData)
+
++ Response 201 (application/json)
+    + Attributes (UserWithId)
+
+
+
+### Create a new session (login) [POST /auth/sessions]
++ Request (application/json)
+    + Attributes (LoginData)
+
++ Response 201 (application/json)
+    + Attributes (Session)
+
+
+
+### Delete a session (logout) [DELETE /auth/sessions]
+Requesting this endpoint will delete the session associated with the token in the `Authorization` header.
+
++ Request (application/json)
+    + Headers
+
+            Authorization: token xyz
+
++ Response 204
+
+
+
+### Retrieve current user [GET /auth/me]
+Requesting this endpoint with an Authorization token will return the user that this token belongs to.
+
++ Request
+    + Headers
+
+            Authorization: token xyz
+
++ Response 200 (application/json)
+    + Attributes (UserWithId)
+
+
+
+
+# Data Structures
+
+## Timestamps (object)
+- createdAt: `2015-01-20T09:48:32.066Z` (string) - The creation date
+- updatedAt: `2017-05-04T14:29:42.490Z` (string) - The last update date
+
+## Plant (object)
+- nickname: `Mr. Basil` (string) - The name of the plant
+- description: `Mr. Basil is a happy plant` (string) - The description of the plant
+- name: `Sweet Basil` (string) -  The plant family
+- Include PlantComfort
+
+## PlantWithId (object)
+- id: `123` (number) - The unique ID of the plant
+- userId: `5` (number, required) - The unique ID of the user who owns the plant
+- Include Plant
+- Include PlantInfo
+- Include Timestamps
+
+## PlantInfo (object)
+- name: `Sweet Basil` (string) -  The plant family
+- imageUrl: `https://en.wikipedia.org/wiki/Basil#/media/File:Basil-Basilico-Ocimum_basilicum-albahaca.jpg` (string) - The wiki image url of the plant
+
+## PlantComfort (object)
+- maxTemp: `30` (number) - The max temperature the plant family is comfortable with in celcius
+- minTemp: `10` (number) - The min temperature the plant family is comfortable with in celcius
+- maxPh: `7.5` (number) - The max soil pH the plant family is comfortable with
+- minPh: `6.5` (number) - The min soil pH the plant family is comfortable with
+- maxHum: `85` (number) - The max soil humidity the plant family is comfortable with in %
+- minHum: `35` (number) - The min soil humidity the plant family is comfortable with in %
+- maxLux: `32400` (number) - The maximum sunlight the plant family is comfortable with in lux
+- minLux: `10800` (number) - The minimum sunlight the plant family needs during daytime in lux
+
+## Data (object)
+- id: `4377` (number) - The id of the data point
+- plantId: `48` (number) - The plant id this data point is associated to
+- type: `celcius` (string) - The type of data
+- reading: `21` (number) - The reading
+- createdAt: `2015-01-20T09:48:32.066Z` (string) - The creation date
+
+## AuthData (object)
+- email: `hunter@thompson.com` (string) - The email that will be used as a login username
+- phone `15551234567` (string) - The phone number associated to the account (used for reminders)
+- password: `Hunter2` (string) - The desired password for the new user
+
+## LoginData (object)
+- email: `hunter@thompson.com` (string) - The email that will be used as a login username
+- password: `Hunter2` (string) - The desired password for the new user
+
+## User (object)
+- email: `hunter@thompson.com` (string) - The email of the user
+
+## UserWithId (object)
+- id: `123` (number) - The unique ID of the user
+- Include User
+- Include Timestamps
+
+## Session (object)
+- token: `uep52qo8wfyh97b24fjafjewi9bb0r24` (string) - The session token
