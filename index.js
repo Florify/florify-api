@@ -22,10 +22,15 @@ const connection = mysql.createPool({
   password: '1234'
 });
 const dataLoader = new FlorifyDataLoader(connection);
+const app = express();
+
+app.use(cors({
+  allowedOrigins: ['*']
+}));
 
 
 // Express initialization
-const app = express();
+
 app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(checkLoginToken(dataLoader));
@@ -34,9 +39,7 @@ app.use('/auth', authController(dataLoader));
 app.use('/plants', plantsController(dataLoader));
 
 
-app.use(cors({
-  allowedOrigins: ['localhost']
-}));
+
 
 
 // Start the server

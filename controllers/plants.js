@@ -6,10 +6,13 @@ module.exports = (dataLoader) => {
   const plantsController = express.Router();
 
   // Retrieve a list of boards
-  plantsController.get('/', (req, res) => {
+  plantsController.get('/', onlyLoggedIn, (req, res) => {
+    // console.log(req.body.token, "hello");
+    // console.log(req.sessionToken, "this is frustrating");
     return dataLoader.getUserFromSession(req.sessionToken)
     .then((user) => {
-      return dataLoader.getPlants(user.users_id || user.id)
+      // console.log(user, "blablabla");
+      return dataLoader.getPlants(user.users_id)
     })
     .then(data => res.json(data))
     .catch(err => res.status(400).json(err));
@@ -19,7 +22,7 @@ module.exports = (dataLoader) => {
   plantsController.get('/:id', (req, res) => {
     // dataLoader.getSinglePlant(req.params.id)
     // .then(result=> {console.log(result, "sexy")})
-    console.log(res, 'who are you');
+    // console.log(res, 'who are you');
     return dataLoader.getSinglePlant(req.params.id)
     .then(data => res.json(data))
     .catch(err => res.status(400).json(err));

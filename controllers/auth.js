@@ -7,8 +7,6 @@ module.exports = (dataLoader) => {
 
   // Create a new user (signup)
   authController.post('/users', (req, res) => {
-    console.log(req.body, "hello")
-    console.log(dataLoader);
     dataLoader.createUser({
       email: req.body.email,
       phone: req.body.phone,
@@ -32,7 +30,6 @@ module.exports = (dataLoader) => {
 
   // Delete a session (logout) (include token in body request object)
   authController.delete('/sessions', onlyLoggedIn, (req, res) => {
-    console.log()
     if (req.sessionToken === req.body.token) {
       dataLoader.deleteToken(req.body.token)
       .then(() => res.status(204).end())
