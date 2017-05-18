@@ -19,7 +19,7 @@ const plantsController = require('./controllers/plants.js');
 const connection = mysql.createPool({
   user: 'root',
   database: 'florify',
-  password: '1234'
+  // password: '1234'
 });
 const dataLoader = new FlorifyDataLoader(connection);
 const app = express();
@@ -35,7 +35,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(checkLoginToken(dataLoader));
 
-app.use('/auth', authController(dataLoader));
+// app.use('/auth', authController(dataLoader));
 app.use('/plants', plantsController(dataLoader));
 
 
