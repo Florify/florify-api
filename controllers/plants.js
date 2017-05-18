@@ -19,11 +19,11 @@ module.exports = (dataLoader) => {
   });
 
   // Retrieve a single board
-  plantsController.get('/:id/:type/:time', (req, res) => {
+  plantsController.get('/:id/:time', (req, res) => {
     // dataLoader.getSinglePlant(req.params.id)
     // .then(result=> {console.log(result, "sexy")})
     // console.log(res, 'who are you');
-    return dataLoader.getSinglePlant(req.params.id, req.params.type, req.params.time)
+    return dataLoader.getSinglePlant(req.params.id, req.params.time)
     .then(data => res.json(data))
     .catch(err => res.status(400).json(err));
   });
