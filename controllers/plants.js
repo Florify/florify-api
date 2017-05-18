@@ -66,11 +66,14 @@ plantsController.post('/:id/:type/:reading', (req, res) => {
     return dataLoader.getUserFromSession(req.sessionToken)
     .then((user) => {
 
-      myUser = user.users_id
+      myUser = user.users_id;
+      // console.log(myUser, "myUser");
+      // console.log(req.body, "the body");
 
       return dataLoader.plantBelongsToUser(req.params.id, user.users_id)
     })
     .then(() => {
+      // console.log(req.body, "hello", req.params.id, myUser, req.body.nickname);
       return dataLoader.updatePlant(req.params.id, {
         userId: myUser,
         nickname: req.body.nickname,
@@ -86,8 +89,12 @@ plantsController.post('/:id/:type/:reading', (req, res) => {
         minlux: req.body.minLux
       });
     })
-    .then(data => res.json(data))
-    .catch(err => res.status(400).json(err));
+    .then(data => {
+      // console.log(data, "heel then line 93");
+      return res.json(data)})
+    .catch(err => {
+      // console.log(err, "heel then line 96");
+      return res.status(400).json(err)});
   });
 
 
@@ -95,14 +102,10 @@ plantsController.post('/:id/:type/:reading', (req, res) => {
   plantsController.delete('/:id', onlyLoggedIn, (req, res) => {
     // First check if the board to be DELETEd belongs to the user making the request
     return dataLoader.getUserFromSession(req.sessionToken)
-    .then((user) => {
-      return dataLoader.plantBelongsToUser(req.params.id, user.id)
-    })
-    .then(() => {
-      return dataLoader.deleteplant(req.params.id);
-    })
-    .then(() => res.status(204).end())
-    .catch(err => res.status(400).json(err));
+    .then((user) => {return dataLoader.plantBelongsToUser(req.params.id, user.users_id)})
+    .then(() => {return dataLoader.deletePlant(req.params.id);})
+    .then(() => { return res.status(204).end()})
+    .catch(err => { return res.status(400).json(err)});
   });
 
 
