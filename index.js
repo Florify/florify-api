@@ -17,9 +17,10 @@ const plantsController = require('./controllers/plants.js');
 
 // Database / data loader initialization
 const connection = mysql.createPool({
-  user: 'root',
-  database: 'florify',
-  // password: '1234'
+  host: 'mysql.bertha.co',
+  user: 'florify_db_user',
+  database: 'florify_db',
+  password: '8dJu29khKrgm4CdM'
 });
 const dataLoader = new FlorifyDataLoader(connection);
 const app = express();

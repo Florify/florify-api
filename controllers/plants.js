@@ -9,8 +9,8 @@ module.exports = (dataLoader) => {
   // plantsController.get('/', onlyLoggedIn, (req, res) => {
   plantsController.get('/', (req, res) => {
 
-    // console.log(req.body.token, "hello"); console.log(req.sessionToken, "this is
-    // frustrating");
+    // console.log(req.body, "hello");
+    // console.log(req.headers.token, "this is frustrating");
     return dataLoader.getUserFromSession(req.sessionToken).then((user) => {
       // console.log(user, "blablabla");
       return dataLoader.getPlants(user.users_id);
@@ -19,10 +19,11 @@ module.exports = (dataLoader) => {
   });
 
   // Retrieve a single board
-  plantsController.get('/:id/:time', (req, res) => {
+  plantsController.get('/:id/:time', onlyLoggedIn, (req, res) => {
     // dataLoader.getSinglePlant(req.params.id)
     // .then(result=> {console.log(result, "sexy")})
     // console.log(res, 'who are you');
+    console.log(req.params.id, req.params.time, "ello mate");
     return dataLoader.getSinglePlant(req.params.id, req.params.time)
     .then(data => res.json(data))
     .catch(err => res.status(400).json(err));
@@ -31,11 +32,11 @@ module.exports = (dataLoader) => {
   // post data
   plantsController.post('/:id/:type/:reading', (req, res) => {
     return dataLoader.createData(req.params.id, req.params.type, req.params.reading)
-    .then(data => res.json(data)).catch(err => res.status(400).json(err));
+    .then(data => res.json(data))
+    .catch(err => {return res.status(400).json(err)});
   });
   // Create a new board
   plantsController.post('/', onlyLoggedIn, (req, res) => {
-    // console.log('hallo', req.body)
     return dataLoader.getUserFromSession(req.sessionToken).then((user) => {
       return dataLoader.createPlant({
         userId: user.users_id,
