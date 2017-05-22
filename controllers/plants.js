@@ -3,14 +3,12 @@ const express = require('express');
 const onlyLoggedIn = require('../lib/only-logged-in');
 
 module.exports = (dataLoader) => {
+
   const plantsController = express.Router();
 
   // Retrieve a list of boards
   // plantsController.get('/', onlyLoggedIn, (req, res) => {
   plantsController.get('/', (req, res) => {
-
-    // console.log(req.body, "hello");
-    // console.log(req.headers.token, "this is frustrating");
     return dataLoader.getUserFromSession(req.sessionToken).then((user) => {
       // console.log(user, "blablabla");
       return dataLoader.getPlants(user.users_id);
@@ -23,7 +21,7 @@ module.exports = (dataLoader) => {
     // dataLoader.getSinglePlant(req.params.id)
     // .then(result=> {console.log(result, "sexy")})
     // console.log(res, 'who are you');
-    console.log(req.params.id, req.params.time, "ello mate");
+    // console.log(req.params.id, req.params.time, "ello mate");
     return dataLoader.getSinglePlant(req.params.id, req.params.time)
     .then(data => res.json(data))
     .catch(err => res.status(400).json(err));
@@ -66,7 +64,7 @@ module.exports = (dataLoader) => {
       return dataLoader.plantBelongsToUser(req.params.id, user.users_id);
     })
     .then(() => {
-      // console.log(req.body, "hello", req.params.id, myUser, req.body.nickname);
+      console.log(req.body, "hello", req.params.id, myUser, req.body);
       return dataLoader.updatePlant(req.params.id, {
         userId: myUser,
         nickname: req.body.nickname,
@@ -74,12 +72,12 @@ module.exports = (dataLoader) => {
         description: req.body.description,
         maxtemp: req.body.maxTemp,
         mintemp: req.body.minTemp,
-        maxph: req.body.maxPh,
-        minph: req.body.minPh,
-        maxhum: req.body.maxHum,
-        minhum: req.body.minHum,
-        maxlux: req.body.maxLux,
-        minlux: req.body.minLux
+        maxph: req.body.maxph,
+        minph: req.body.minph,
+        maxhum: req.body.maxhum,
+        minhum: req.body.minhum,
+        maxlux: req.body.maxlux,
+        minlux: req.body.minlux
       });
     })
     .then((data) => {
