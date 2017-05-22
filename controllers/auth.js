@@ -19,7 +19,6 @@ module.exports = (dataLoader) => {
 
   // Create a new session (login)
   authController.post('/sessions', (req, res) => {
-    console.log(req.body, "ello");
     dataLoader.createTokenFromCredentials(
       req.body.email,
       req.body.password

@@ -64,7 +64,7 @@ module.exports = (dataLoader) => {
       return dataLoader.plantBelongsToUser(req.params.id, user.users_id);
     })
     .then(() => {
-      console.log(req.body, "hello", req.params.id, myUser, req.body);
+      // console.log(req.body, "hello", req.params.id, myUser, req.body);
       return dataLoader.updatePlant(req.params.id, {
         userId: myUser,
         nickname: req.body.nickname,
