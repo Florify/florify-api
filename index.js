@@ -2,7 +2,7 @@ const superagent = require('superagent');
 const express = require('express');
 const mysql = require('promise-mysql');
 const cors = require('cors');
-const API_HOST = 'https://f74ec356.ngrok.io';
+const API_HOST = 'localhost:3001';
 
 // Express middleware
 const bodyParser = require('body-parser');
