@@ -2,7 +2,7 @@ const superagent = require('superagent');
 const express = require('express');
 const mysql = require('promise-mysql');
 const cors = require('cors');
-const API_HOST = 'localhost:3001';
+const API_HOST = process.env.API_HOST;
 
 // Express middleware
 const bodyParser = require('body-parser');
@@ -26,12 +26,8 @@ const plantsController = require('./controllers/plants.js');
 const reminderController = require('./controllers/reminders.js');
 
 // Database / data loader initialization
-const connection = mysql.createPool({
-  host: 'mysql.bertha.co',
-  user: 'florify_db_user',
-  database: 'florify_db',
-  password: '8dJu29khKrgm4CdM'
-});
+
+const connection = mysql.createPool(process.env.DATABASE_URL);
 const dataLoader = new FlorifyDataLoader(connection);
 const app = express();
 
