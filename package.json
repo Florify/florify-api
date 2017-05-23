@@ -4,7 +4,8 @@
   "description": "ExpressJS and MySQL-based API for monitoring plant vitals.",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "start": "pm2 start --no-daemon index.js",
+    "dev": "nodemon -r dotenv/config index.js"
   },
   "repository": {
     "type": "git",
@@ -33,6 +34,7 @@
     "validate.js": "^0.11.1"
   },
   "devDependencies": {
+    "dotenv": "^4.0.0",
     "nodemon": "^1.11.0"
   }
 }
